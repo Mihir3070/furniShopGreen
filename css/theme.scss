@@ -1,0 +1,53 @@
+
+$themes: (
+  light: (
+    bodyBackground: #FFFFFF,
+    primaryGreen: #244E4D,
+    textColor: #242C2C,
+    primaryCardTitle: #244E4D,
+    cardBg: #EDF3F3,
+    cardBgHover: #d5dbdb,
+    containerBgColor: #F4F6F5,
+    headerBgColor: #FFFFFF,
+    glassEffect: rgba(255, 255, 255, 0.5),
+    btnBoxShadow: -2px 29px 48px -9px rgba(0, 0, 0, 0.25),
+  ),
+  dark: (
+    bodyBackground: #262626,
+    primaryGreen: #A5C9CA,
+    textColor: #A5C9CA,
+    primaryCardTitle: #A5C9CA,
+    cardBg: #1a1b1b,
+    cardBgHover: rgba(0,0,0,0.8),
+    linkColor: #FFFFFF,
+    containerBgColor: #1a1b1b,
+    headerBgColor: #244E4D,
+    glassEffect: rgba(0,0,0,0.15),
+    btnBoxShadow: -2px 29px 48px -9px rgba(255, 255, 255, 25%),
+  ),
+);
+
+// Themify for themes
+@mixin themify($themes: $themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), "#{$key}");
+        $theme-map: map-merge(
+          $theme-map,
+          (
+            $key: $value,
+          )
+        ) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map-get($theme-map, $key); 
+}
